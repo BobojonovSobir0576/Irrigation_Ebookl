@@ -27,3 +27,35 @@ class CreateDownloadBook(serializers.ModelSerializer):
             download_date = validated_data.get('download_date')
         )
         return craete
+    
+    
+
+class CreateBookSerializer(serializers.ModelSerializer):
+    
+    
+    class  Meta:
+        model = Books
+        fields = ['file','image','name_book','author_book','city_name_of_book','resource_language_book','resource_type_book','resource_field_book','publisher_name','publisher_year','ISBN_code','institution_that_added_resource','institution_where_the_thesis_was_submitted','protection_institution','magazine','description','page_number','created_at',]
+        
+    def create(self, validated_data):
+        create = Books.objects.create(
+            author = self.context.get('user'),
+            name_book = validated_data['name_book'],
+            author_book = validated_data['author_book'],
+            publisher_name = validated_data['publisher_name'],
+            publisher_year = validated_data['publisher_year'],
+            ISBN_code = validated_data['ISBN_code'],
+            institution_that_added_resource = validated_data['institution_that_added_resource'],
+            institution_where_the_thesis_was_submitted = validated_data['institution_where_the_thesis_was_submitted'],
+            protection_institution = validated_data['protection_institution'],
+            magazine = validated_data['magazine'],
+            description = validated_data['description'],
+            page_number = validated_data['page_number'],
+            city_name_of_book = validated_data['city_name_of_book'],
+            resource_language_book = validated_data['resource_language_book'],
+            resource_type_book = validated_data['resource_type_book'],
+            resource_field_book = validated_data['resource_field_book'],
+            file = self.context.get('file'),
+            image = self.context.get('image')
+        )
+        return create

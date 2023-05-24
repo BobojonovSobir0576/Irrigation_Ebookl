@@ -1,6 +1,8 @@
+import json
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
+from django.core.serializers import serialize
 from django.contrib.auth.models import *
 from django.db.models import Q  
 
@@ -98,5 +100,39 @@ class DownloadBooksViews(APIView):
             serializers.save()
             return Response({'msg':'success'},status=status.HTTP_201_CREATED)
 
+class CreateBook(APIView):
+    render_classes = [UserRenderers]
+    perrmisson_class = [permissions.IsAuthenticated]
+
+    def get(self,request,format=None):
+        main_categories = MainCategories.objects.all().order_by('-id')
+        cityname = CityName.objects.all().order_by('-id')
+        resourceLanguage = ResourceLanguage.objects.all().order_by('-id')
+        resourceType = ResourceType.objects.all().order_by('-id')
+        resourceField = ResourceField.objects.all().order_by('-id')
+        
+        serialized_data1 = serialize("json", main_categories)
+        serialized_data1 = json.loads(serialized_data1)
+        
+        serialized_data2 = serialize("json", cityname)
+        serialized_data2 = json.loads(serialized_data2)
+        
+        serialized_data3 = serialize("json", resourceLanguage)
+        serialized_data3 = json.loads(serialized_data3)
+        
+        serialized_data4 = serialize("json", resourceType)
+        serialized_data4 = json.loads(serialized_data4)
+        
+        serialized_data5 = serialize("json", resourceField)
+        serialized_data5 = json.loads(serialized_data5)
+        
+        return Response({'MainCategories':serialized_data1,'CityName': serialized_data2 ,'ResourceLanguage': serialized_data3 ,'ResourceType': serialized_data4  ,'ResourceField': serialized_data5 })
+    
+    def post(self,request,format=None):
+        serializers = CreateBookSerializer(data=request.data,context = {'user':request.user,'file':request.data.get('file'),'image':request.data.get('image')})
+        if serializers.is_valid(raise_exception=True):
+            serializers.save()
+            return Response({'msg':'success'},status=status.HTTP_201_CREATED)
+    
         
         

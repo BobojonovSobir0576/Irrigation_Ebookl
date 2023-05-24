@@ -69,10 +69,10 @@ class Books(models.Model):
     institution_where_the_thesis_was_submitted = models.CharField(max_length=150,blank=False, null=False) #Dissertatsiyani qo'shgan muassasa
     protection_institution = models.CharField(max_length=150,blank=False, null=False) #Himoya muassasasi:
     magazine = models.CharField(max_length=150,blank=False, null=False) #Jurnal
-    description = models.TextField(default='No description')
-    page_number = models.IntegerField(default=0)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateField()
+    description = models.TextField(default='No description',blank=False, null=False)
+    page_number = models.IntegerField(default=0,blank=False, null=False)
+    author = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
+    created_at = models.DateField(auto_now_add=True)
     
     def __str__(self):
         return self.name_book
