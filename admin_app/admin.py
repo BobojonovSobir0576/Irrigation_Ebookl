@@ -30,3 +30,8 @@ class BooksAdmin(admin.ModelAdmin):
 @admin.register(DownloadBooks)
 class DownloadBooksAdmin(admin.ModelAdmin):
     list_display = ('book','author','download_date')
+    
+    
+@admin.register(Posts)
+class PostsAdmin(admin.ModelAdmin):
+    list_display = ('full_name','post','download_date')

@@ -94,3 +94,10 @@ class DownloadBooks(models.Model):
         verbose_name_plural = "Yuklab olingan kitoblar"
     
     
+class Posts(models.Model):
+    full_name = models.CharField(max_length=150)
+    post = models.TextField()
+    download_date = models.DateField()
+    class Meta:
+        verbose_name = "Postlar"
+        verbose_name_plural = "Postlar"

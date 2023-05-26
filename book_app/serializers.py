@@ -1,10 +1,52 @@
 from rest_framework import serializers
 from admin_app.models import *
 
-class BookSerializer(serializers.ModelSerializer):
+
+class MainCateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MainCategories
+        fields = '__all__'
+
+class CityNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CityName
+        fields = '__all__'
+
+class ResourceLanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResourceLanguage
+        fields = '__all__'
+        
+class ResourceTypeSerializer(serializers.ModelSerializer):
+    main_categories = MainCateSerializer(read_only=True)
+    
+    class Meta:
+        model = ResourceType
+        fields = ['id','main_categories','name']
+        
+class ResourceFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResourceField
+        fields = '__all__'
+        
+class BookFilterSerialiazer(serializers.ModelSerializer):
+    city_name_of_book = CityNameSerializer(read_only=True)
+    resource_language_book = ResourceLanguageSerializer(read_only=True)
+    
     class Meta:
         model = Books
-        fields = '__all__'
+        fields = ['id','name_book','author_book','description','publisher_year','city_name_of_book','resource_language_book',]
+
+class BookSerializer(serializers.ModelSerializer):
+    resource_type_book = ResourceTypeSerializer(read_only=True)
+    city_name_of_book = CityNameSerializer(read_only=True)
+    resource_language_book = ResourceLanguageSerializer(read_only=True)
+    resource_field_book = ResourceTypeSerializer(read_only=True)
+    
+    class Meta:
+        model = Books
+        fields = ['id','name_book','author_book','description','publisher_year','resource_type_book','city_name_of_book','resource_language_book','file','image','resource_field_book','publisher_name','ISBN_code','institution_that_added_resource','institution_where_the_thesis_was_submitted','protection_institution','magazine','page_number',]
+        
         
 class BookDownloadSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,8 +61,6 @@ class CreateDownloadBook(serializers.ModelSerializer):
         fields = '__all__'
         
     def create(self, validated_data):
-        print(self.context.get('get_book'))
-        print(self.context.get('user'))
         craete = DownloadBooks.objects.create(
             book = self.context.get('get_book'),
             author = self.context.get('user'),
@@ -59,3 +99,12 @@ class CreateBookSerializer(serializers.ModelSerializer):
             image = self.context.get('image')
         )
         return create
+
+
+class CreatePostSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Posts
+        fieslds = ['__all__']
+        
+    def create(self, validated_data):
+        return super(CreatePostSerializers, self).create(validated_data)

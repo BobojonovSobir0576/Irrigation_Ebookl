@@ -36,15 +36,19 @@ class CategoriesCountView(APIView):
               })
         return Response({'count':arr_1},status=status.HTTP_200_OK)
 
-class BookingsListView(generics.GenericAPIView):
-    serializer_class = BookSerializer
+class BookingsListView(generics.ListAPIView):
+    queryset = Books.objects.all()
+    serializer_class = BookFilterSerialiazer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields =['name_book','author_book','city_name_of_book','resource_language_book','resource_type_book','resource_field_book','publisher_name','publisher_year',]
     
-    def get(self, request, format=None):
-        search_name_book = request.query_params.get('search_book', '')
-        books = Books.objects.filter((Q(author_book__icontains=search_name_book) | Q(name_book__icontains=search_name_book)))
-        serializers = self.serializer_class(books, many=True)
-        return Response(serializers.data, status=status.HTTP_200_OK)
-
+    # def get(self, request, format=None):
+    #     search_name_book = request.query_params.get('search_book', '')
+    #     books = Books.objects.filter((Q(author_book__icontains=search_name_book) | Q(name_book__icontains=search_name_book)))
+    #     serializers = self.serializer_class(books, many=True)
+    #     return Response(serializers.data, status=status.HTTP_200_OK)
+    
+    
 class BookList(APIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = BookSerializer
@@ -77,6 +81,16 @@ class BookList(APIView):
         else:
             serializer = self.serializer_class(instance, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BookDetailViews(APIView):
+    render_classes = [UserRenderers]
+    
+    def get(self,request,id,format=None):
+        book = get_object_or_404(Books, id = id)
+        serializers = BookSerializer(book,many=True)
+        return Response(serializers.data,status=status.HTTP_200_OK)
+    
 
 
 class GetBookDownloadViews(APIView):
@@ -133,6 +147,15 @@ class CreateBook(APIView):
         if serializers.is_valid(raise_exception=True):
             serializers.save()
             return Response({'msg':'success'},status=status.HTTP_201_CREATED)
-    
-        
+
+
+class CreatePostViews(APIView):
+    render_classes = [UserRenderers]
+
+    def post(self,request,fotmat=None):
+        serializers = CreatePostSerializers(data=request.data)
+        if serializers.is_valid(raise_exception=True):
+            serializers.save()
+            return Response({'msg':'success'},status=status.HTTP_201_CREATED)
+        return Response(serializers.errors,status=status.HTTP_400_BAD_REQUEST)    
         
