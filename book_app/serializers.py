@@ -31,11 +31,12 @@ class ResourceFieldSerializer(serializers.ModelSerializer):
         
 class BookFilterSerialiazer(serializers.ModelSerializer):
     city_name_of_book = CityNameSerializer(read_only=True)
+    resource_type_book = ResourceTypeSerializer(read_only=True)	
     resource_language_book = ResourceLanguageSerializer(read_only=True)
     
     class Meta:
         model = Books
-        fields = ['id','name_book','author_book','description','publisher_year','city_name_of_book','resource_language_book',]
+        fields = ['id','name_book','author_book','description','publisher_year','city_name_of_book','resource_language_book','resource_type_book',]
 
 class BookSerializer(serializers.ModelSerializer):
     resource_type_book = ResourceTypeSerializer(read_only=True)
@@ -104,7 +105,11 @@ class CreateBookSerializer(serializers.ModelSerializer):
 class CreatePostSerializers(serializers.ModelSerializer):
     class Meta:
         model = Posts
-        fieslds = ['__all__']
+        fields = ['full_name','post',]
         
     def create(self, validated_data):
-        return super(CreatePostSerializers, self).create(validated_data)
+        create = Posts.objects.create(
+            full_name = validated_data['full_name'],
+            post = validated_data['post']
+        )
+        return create

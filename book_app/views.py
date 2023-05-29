@@ -88,7 +88,7 @@ class BookDetailViews(APIView):
     
     def get(self,request,id,format=None):
         book = get_object_or_404(Books, id = id)
-        serializers = BookSerializer(book,many=True)
+        serializers = BookSerializer(book)
         return Response(serializers.data,status=status.HTTP_200_OK)
     
 

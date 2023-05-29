@@ -45,9 +45,17 @@ class UserSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        validated_data['password'] = make_password(validated_data.get('password'))
+        get_groups = Group.objects.get(name = 'Student')
+        create = User.objects.create(
+            password = make_password(validated_data.get('password')),
+            username = validated_data['username'],
+            first_name = validated_data['first_name'],
+            last_name = validated_data['last_name']
+        )
+        create.groups.add(get_groups)
+        create.save()
 
-        return super(UserSerializer, self).create(validated_data)
+        return create
         
     def update(self,instance,validated_data):
         instance.username = validated_data.get('username', instance.username)

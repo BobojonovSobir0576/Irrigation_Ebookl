@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-xtn@!x9m447@jj4d^w567ls-ac=+g*p99$i(msu^two)%7i_p1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -160,10 +160,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGIN_REDIRECT_URL = 'sign_in'
-# LOGIN_URL='sign_in'
+LOGIN_REDIRECT_URL = 'auth/user_login/'
+LOGIN_URL='auth/user_login/'
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8000",
+    "http://localhost:3000",
+
 ]
 

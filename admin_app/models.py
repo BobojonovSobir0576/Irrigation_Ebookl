@@ -97,7 +97,7 @@ class DownloadBooks(models.Model):
 class Posts(models.Model):
     full_name = models.CharField(max_length=150)
     post = models.TextField()
-    download_date = models.DateField()
+    download_date = models.DateField(auto_now_add=True)
     class Meta:
         verbose_name = "Postlar"
         verbose_name_plural = "Postlar"
