@@ -51,7 +51,7 @@ class UserSerializer(serializers.ModelSerializer):
             last_name=validated_data['last_name'],
             username=validated_data['username'],
         )
-        create.make_password(validated_data.get('password'))
+        create.set_password(validated_data.get('password'))
         groups = Group.objects.filter(id = 1)[0]
         create.groups.add(groups)
         create.save()
