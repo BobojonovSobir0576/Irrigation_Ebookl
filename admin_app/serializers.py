@@ -46,7 +46,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         
-        validated_data['password'] = make_password(validated_data.get('password'))
+        create = User.objects.create(
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            username=validated_data['username'],
+        )
+        create.make_password(validated_data.get('password'))
+        groups = Group.objects.filter(id = 1)[0]
+        create.groups.add(groups)
+        create.save()
         
         return create
         
