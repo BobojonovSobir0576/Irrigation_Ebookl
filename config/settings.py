@@ -165,7 +165,7 @@ LOGIN_URL='auth/user_login/'
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8000",
-    "http://localhost:5173",
+    "http://localhost:3000",
     "http://31.129.97.46",
     "http://library.tiiamebb.uz"
 ]
