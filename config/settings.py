@@ -160,8 +160,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGIN_REDIRECT_URL = 'sign_in'
-# LOGIN_URL='sign_in'
+LOGIN_REDIRECT_URL = 'auth/user_login/'
+LOGIN_URL='auth/user_login/'
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:8000",
