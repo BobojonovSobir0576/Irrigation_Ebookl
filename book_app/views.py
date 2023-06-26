@@ -74,13 +74,14 @@ class BookList(APIView):
         return self.paginator.get_paginated_response(data)
     
     def get(self, request, cate_id, format=None, *args, **kwargs):
-        instance = Books.objects.filter(resource_type_book__main_categories = cate_id)
+        instance = Books.objects.filter(resource_type_book__main_categories__id = cate_id)
         page = self.paginate_queryset(instance)
+        print(self.paginator.page_size)
         if page is not None:
             serializer = self.get_paginated_response(self.serializer_class(page, many=True).data)
         else:
             serializer = self.serializer_class(instance, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'msg':serializer.data}, status=status.HTTP_200_OK)
 
 
 class BookDetailViews(APIView):
@@ -88,7 +89,7 @@ class BookDetailViews(APIView):
     
     def get(self,request,id,format=None):
         book = get_object_or_404(Books, id = id)
-        serializers = BookSerializer(book,many=True)
+        serializers = BookSerializer(book)
         return Response(serializers.data,status=status.HTTP_200_OK)
     
 

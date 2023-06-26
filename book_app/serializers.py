@@ -46,7 +46,7 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Books
         fields = ['id','name_book','author_book','description','publisher_year','resource_type_book','city_name_of_book','resource_language_book','file','image','resource_field_book','publisher_name','ISBN_code','institution_that_added_resource','institution_where_the_thesis_was_submitted','protection_institution','magazine','page_number',]
-        
+    
         
 class BookDownloadSerializer(serializers.ModelSerializer):
     class Meta:

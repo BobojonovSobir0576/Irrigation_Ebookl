@@ -5,7 +5,7 @@ from book_app import views
 urlpatterns = [
     path('<int:cate_id>/',views.BookList.as_view()),
     path('download/<int:id>/',views.DownloadBooksViews.as_view()),
-    path('<int:id/',views.BookDetailViews.as_view()),
+    path('detail/<int:id>/',views.BookDetailViews.as_view()),
     path('filter/',views.BookingsListView.as_view()),
     # path('filter_search/',views.BookFilterViews.as_view()),
     path('count_cate/',views.CategoriesCountView.as_view()),
